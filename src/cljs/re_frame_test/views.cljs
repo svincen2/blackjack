@@ -15,22 +15,31 @@
    :spades :black})
 
 (defn card-view
-  [[id {:keys [rank suit facedown?] :as card}]]
-  (let [suit-color (suit->color suit)
-        class (str "card" (if facedown? " facedown"))]
-    (println "id" id)
-    (fn []
-      [:div {:class class}
-       [:div.rank {:style {:color suit-color}}
-        (core/rank->str rank)]
-       [:div.suit {:style {:color suit-color}}
-        (core/suit->char suit)]])))
+  ([card]
+   (card-view card nil))
+  ([{:keys [rank suit facedown? owner] :as card} & opts]
+   (let [player @(re-frame/subscribe [:player owner])
+         {show-owner? :show-owner
+          :or {show-owner? false}} opts
+         suit-color (suit->color suit)
+         class (str "card"
+                    (if facedown? " facedown")
+                    )]
+     (fn []
+       [:div {:class class}
+        [:div.rank {:style {:color suit-color}}
+         (core/rank->str rank)]
+        [:div.suit {:style {:color suit-color}}
+         (core/suit->char suit)]
+        (if show-owner?
+          [:div.owner (:name player)])
+        ]))))
 
 (defn cards-view
-  [player-id]
-  (let [cards (re-frame/subscribe [:player-cards player-id])]
+  [player]
+  (let [cards (re-frame/subscribe [:player-cards (:id player)])]
     (fn []
-      (let [score (blackjack/score (map #(get % 1) @cards))]
+      (let [score (blackjack/score @cards)]
         [:div
          (doall
            (for [card @cards]
@@ -39,21 +48,19 @@
 
 (defn dealer-panel
   []
-  (let [dealer @(re-frame/subscribe [:dealer])
-        ]
+  (let [dealer @(re-frame/subscribe [:dealer])]
     (fn []
       [:div.dealer-panel
-       [:div (str "dealer, id: " (:id dealer))]
-       [cards-view (:id dealer)]
-       ])))
+       [:div (str (:name dealer) " (dealer)" )]
+       [cards-view dealer]])))
 
 (defn player-panel
-  [{:keys [id name cash]}]
+  [{:keys [id name cash] :as player}]
   (let []
     (fn []
       [:div.player-panel
-       [:div (str "name: " name ", id: " id)]
-       [cards-view id]
+       [:div name]
+       [cards-view player]
        [:div (str "cash $" cash)]
        [:div
         [:button {:on-click #(re-frame/dispatch [:remove-player id])}
@@ -73,9 +80,9 @@
         cash (reagent/atom "")]
     (fn []
       [:div
-       [:div {:style {:padding "6px"
-                      :width "180px"
-                      :border "1px solid black"}}
+
+       ; Add player
+       [:div {:style {:padding "6px" :width "180px" :border "1px solid black"}}
         [:div {:style {:padding "4px 0"}}
          "name"
          [:input {:style {:float :right}
@@ -87,24 +94,39 @@
                   :value @cash
                   :on-change #(reset! cash (-> % .-target .-value))}]]
         [:div
-         [:button {:on-click #(re-frame/dispatch
-                                [:add-player
-                                 (blackjack/new-player {:name @name
-                                                        :cash (js/parseFloat @cash)})])}
+         [:button
+          {:on-click #(re-frame/dispatch
+                        [:add-player
+                         (blackjack/new-player {:name @name :cash (js/parseFloat @cash)})])}
           "add player"]]]
 
+       ; Buttons
        [:div {:style {:padding "6px"
                       :width "180px"
                       :border "1px solid black"}}
         [:button {:on-click #(re-frame/dispatch [:deal-new-game])} "deal"]
+        [:button {:on-click #(re-frame/dispatch [:shuffle])} "shuffle"]
         [:button {:on-click #(re-frame/dispatch [:initialize-db])} "reset"]]])))
 
+(defn deck-view
+  []
+  (let [deck (re-frame/subscribe [:deck])]
+    [:div
+     [:div "deck"]
+     [:div
+      (for [card @deck]
+        #^{:key (core/new-id)} [card-view card :show-owner true])]]))
+
 (defn main-panel []
-  (let []
+  (let [turn (re-frame/subscribe [:turn])
+        button (re-frame/subscribe [:button])]
     (fn []
       [:div
        [dealer-panel]
        [players-panel]
        [:hr]
        [control-panel]
+       [deck-view]
+       [:div (str "turn: " @turn)]
+       [:div (str "button: " @button)]
        ])))

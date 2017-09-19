@@ -3,6 +3,8 @@
             [re-frame-test.app.blackjack :as blackjack]))
 
 (def default-db
-  {:deck    (blackjack/new-deck :num-decks 1 :shuffled false)
-   :dealer  (blackjack/new-player {:name "dealer" :cash 0.00})
-   :players (list)})
+  {:deck    (core/new-deck :num-decks 1 :shuffled false)
+   :dealer  (blackjack/new-player {:name "loyd" :cash 0.00})
+   :players []
+   :turn nil
+   :button nil})

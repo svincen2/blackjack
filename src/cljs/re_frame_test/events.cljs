@@ -28,4 +28,12 @@
           dealer (:dealer db)
           players (:players db)
           new-deck (apply blackjack/deal-new-round deck dealer players)]
-      (assoc db :deck new-deck))))
+      (-> db
+          (assoc :deck new-deck)
+          (assoc :turn (first players))
+          (assoc :button (first players))))))
+
+(re-frame/reg-event-db
+  :shuffle
+  (fn [db _]
+    (update db :deck shuffle)))
