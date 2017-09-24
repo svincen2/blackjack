@@ -36,6 +36,11 @@
     (:deck db)))
 
 (re-frame/reg-sub
+  :phase
+  (fn [db _]
+    (:phase db)))
+
+(re-frame/reg-sub
   :turn
   (fn [db _]
     (:turn db)))
@@ -44,3 +49,4 @@
   :button
   (fn [db _]
     (:button db)))
+

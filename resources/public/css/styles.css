@@ -32,6 +32,10 @@
     opacity: initial;
 }
 
+.cards-view {
+	min-height: 118px;
+}
+
 .dealer-panel {
     border: 1px solid black;
     padding: 2px 8px;
@@ -40,4 +44,8 @@
 .player-panel {
     border: 1px solid black;
     padding: 2px 8px;
+}
+
+.player-panel.turn {
+	background-color: yellow;
 }
