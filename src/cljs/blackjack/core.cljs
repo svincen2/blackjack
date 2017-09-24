@@ -1,10 +1,10 @@
-(ns re-frame-test.core
+(ns blackjack.core
   (:require [reagent.core :as reagent]
             [re-frame.core :as re-frame]
-            [re-frame-test.events]
-            [re-frame-test.subs]
-            [re-frame-test.views :as views]
-            [re-frame-test.config :as config]))
+            [blackjack.events]
+            [blackjack.subs]
+            [blackjack.views :as views]
+            [blackjack.config :as config]))
 
 
 (defn dev-setup []

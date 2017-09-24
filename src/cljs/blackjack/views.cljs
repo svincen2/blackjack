@@ -1,10 +1,9 @@
-(ns re-frame-test.views
+(ns blackjack.views
   (:require [re-frame.core :as re-frame]
-            [re-frame-test.app.core :as core]
-            [re-frame-test.app.blackjack :as bj]
+            [blackjack.app.core :as core]
+            [blackjack.app.blackjack :as blackjack]
             [cljs.pprint :refer [pprint]]
-            [reagent.core :as reagent]
-            [re-frame-test.app.blackjack :as blackjack]))
+            [reagent.core :as reagent]))
 
 (def wait-limit-for-more-bets 30)
 (def view-results-delay 15)

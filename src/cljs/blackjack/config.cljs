@@ -1,4 +1,4 @@
-(ns re-frame-test.config)
+(ns blackjack.config)
 
 (def debug?
   ^boolean goog.DEBUG)

@@ -1,5 +1,5 @@
-(ns re-frame-test.app.blackjack
-  (:require [re-frame-test.app.core :as core]
+(ns blackjack.app.blackjack
+  (:require [blackjack.app.core :as core]
             [clojure.pprint :refer [pprint]]))
 
 (defrecord Player [id name cash bet]

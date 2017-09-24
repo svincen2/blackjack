@@ -1,8 +1,8 @@
-(ns re-frame-test.events
+(ns blackjack.events
   (:require [re-frame.core :as re-frame]
-            [re-frame-test.db :as db]
-            [re-frame-test.app.core :as core]
-            [re-frame-test.app.blackjack :as blackjack]
+            [blackjack.db :as db]
+            [blackjack.app.core :as core]
+            [blackjack.app.blackjack :as blackjack]
             [clojure.pprint :refer [pprint]]))
 
 (re-frame/reg-event-db

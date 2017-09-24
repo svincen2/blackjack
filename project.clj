@@ -1,4 +1,4 @@
-(defproject re-frame-test "0.1.0-SNAPSHOT"
+(defproject blackjack "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.908"]
                  [reagent "0.7.0"]
@@ -25,8 +25,8 @@
   {:builds
    [{:id           "dev"
      :source-paths ["src/cljs"]
-     :figwheel     {:on-jsload "re-frame-test.core/mount-root"}
-     :compiler     {:main                 re-frame-test.core
+     :figwheel     {:on-jsload "blackjack.core/mount-root"}
+     :compiler     {:main                 blackjack.core
                     :output-to            "resources/public/js/compiled/app.js"
                     :output-dir           "resources/public/js/compiled/out"
                     :asset-path           "js/compiled/out"
@@ -37,7 +37,7 @@
 
     {:id           "min"
      :source-paths ["src/cljs"]
-     :compiler     {:main            re-frame-test.core
+     :compiler     {:main            blackjack.core
                     :output-to       "resources/public/js/compiled/app.js"
                     :optimizations   :advanced
                     :closure-defines {goog.DEBUG false}

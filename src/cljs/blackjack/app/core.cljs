@@ -1,4 +1,4 @@
-(ns re-frame-test.app.core
+(ns blackjack.app.core
   (:require [clojure.string :as str]))
 
 ; UID generation
